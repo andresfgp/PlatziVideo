@@ -1,53 +1,54 @@
 import React from 'react';
-import Header from '../components/Header';
+import { connect } from 'react-redux';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import Footer from '../components/Footer';
 import '../assets/styles/App.scss';
-import useInitialState from '../hooks/useInitialState';
 
-const API = 'http://localhost:3000/initalState';
-
-const Home = () => {
-  const initialState = useInitialState(API);
+const Home = ({ myList, trends, originals }) => {
   return (
-    <div className='app'>
-      <Header />
+    <>
       <Search />
-      {initialState.mylist.length > 0 && (
+      {myList.length > 0 && (
         <Categories title='Mi lista'>
           <Carousel>
             {
-            // eslint-disable-next-line react/jsx-props-no-spreading
-              initialState.mylist.map((item) => <CarouselItem key={item.id} {...item} />)
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              myList.map((item) => <CarouselItem key={item.id} {...item} />)
             }
           </Carousel>
         </Categories>
       )}
-      {initialState.trends.length > 0 && (
+      {trends.length > 0 && (
         <Categories title='Tendencia'>
           <Carousel>
             {
-            // eslint-disable-next-line react/jsx-props-no-spreading
-              initialState.trends.map((item) => <CarouselItem key={item.id} {...item} />)
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              trends.map((item) => <CarouselItem key={item.id} {...item} />)
             }
           </Carousel>
         </Categories>
       )}
-      {initialState.originals.length > 0 && (
+      {originals.length > 0 && (
         <Categories title='Originales'>
           <Carousel>
             {
               // eslint-disable-next-line react/jsx-props-no-spreading
-              initialState.originals.map((item) => <CarouselItem key={item.id} {...item} />)
+              originals.map((item) => <CarouselItem key={item.id} {...item} />)
             }
           </Carousel>
         </Categories>
       )}
-      <Footer />
-    </div>
+    </>
   );
 };
-export default Home;
+
+const mapStateToProps = (state) => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+export default connect(mapStateToProps, null)(Home); //connect(props,actions)
