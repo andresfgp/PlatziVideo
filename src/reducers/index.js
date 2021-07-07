@@ -10,6 +10,11 @@ const reducer = (state, action) => {
         ...state, //traer el estado que ya tengo
         myList: state.myList.filter((items) => items.id !== action.payload),
       };
+    case 'LOGIN_REQUEST':
+      return {
+        ...state, //traer el estado que ya tengo
+        user: action.payload,
+      };
     default:
       return state;
 

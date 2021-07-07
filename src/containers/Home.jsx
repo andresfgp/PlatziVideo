@@ -7,6 +7,7 @@ import CarouselItem from '../components/CarouselItem';
 import '../assets/styles/App.scss';
 
 const Home = ({ myList, trends, originals }) => {
+
   return (
     <>
       <Search />
