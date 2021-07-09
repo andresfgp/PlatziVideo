@@ -9,6 +9,7 @@ import twitterIcon from '../assets/static/twitter-icon.png';
 const Login = (props) => {
   const [form, setValues] = useState({
     email: '',
+    password: '',
   });
 
   const handleInput = (event) => { //recopilar informacion de formulario
