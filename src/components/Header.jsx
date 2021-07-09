@@ -1,7 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; //trae el estado al componente, conectandolo con store
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import gravatar from '../utils/gravatar';
+import { logoutRequest } from '../actions'; // action para cerrar sesión
 import '../assets/styles/components/Header.scss';
 import logo from '../assets/static/logo-platzi-video-BW2.png';
 import userIcon from '../assets/static/user-icon.png';
@@ -9,6 +11,9 @@ import userIcon from '../assets/static/user-icon.png';
 const Header = (props) => {
   const { user } = props;
   const hasUser = Object.keys(user).length > 0; //validacion si user tiene elementos -> user es un objeto
+  const handleLogout = () => {
+    props.logoutRequest({});// manda un objeto vacio
+  };
   return (
     <header className='header'>
       <Link to='/'><img className='header__img' src={logo} alt='Platzi Video' /></Link>
@@ -20,16 +25,31 @@ const Header = (props) => {
           <p>Perfil</p>
         </div>
         <ul>
-          <li><Link to='/'>Cuenta</Link></li>
-          <li><Link to='/login'>Iniciar Sesión</Link></li>
+          {hasUser ? (
+            <>
+              <li><Link to='/'>{user.name}</Link></li>
+              <li><Link to='#logout' onClick={handleLogout}>Cerrar Sesión</Link></li>
+            </>
+          ) :
+            <li><Link to='/login'>Iniciar Sesión</Link></li>}
         </ul>
       </div>
     </header>
   );
 };
-const mapStateToProps = (state) => {
+
+const mapStateToProps = (state) => { //mapea nuestra propiedades del estado que estamos requiriendo
   return {
     user: state.user,
   };
 };
-export default connect(mapStateToProps, null)(Header);
+
+const mapDispatchToProps = { //se encarga de todas las acciones que tenemos que enviar a nuestro documento
+  logoutRequest,
+};
+
+Header.propTypes = {
+  user: PropTypes.object,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header); // conecta los estados traidos y lo que se va enviar dentro de nuestro componente
