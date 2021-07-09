@@ -25,6 +25,11 @@ const reducer = (state, action) => {
         ...state, //traer el estado que ya tengo
         user: action.payload,
       };
+    case 'GET_VIDEO_SOURCE':
+      return {
+        ...state, //traer el estado que ya tengo
+        playing: state.trends.concat(state.originals).find((item) => item.id === Number(action.payload)) || [], // Usa el metodo concat para unir los 2 arrays y luego el metodo find para filtrar.
+      };
     default:
       return state;
 
