@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import '../assets/styles/components/Player.scss';
-import Redirect from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { getVideoSource } from '../actions';
 
 const Player = (props) => {

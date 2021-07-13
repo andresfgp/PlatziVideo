@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useInitialState = (API) => {
   const [videos, setVideos] = useState({ mylist: [], trends: [], originals: [] });
+
   useEffect(() => {
     fetch(API) //recibe una API
       .then((response) => response.json())

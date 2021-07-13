@@ -5,6 +5,7 @@ import { loginRequest } from '../actions';
 import '../assets/styles/components/Login.scss';
 import googleIcon from '../assets/static/google-icon.png';
 import twitterIcon from '../assets/static/twitter-icon.png';
+import Header from '../components/Header';
 
 const Login = (props) => {
   const [form, setValues] = useState({
@@ -26,49 +27,57 @@ const Login = (props) => {
   };
 
   return (
-    <section className='login'>
-      <section className='login__container'>
-        <h2>Inicia sesión</h2>
-        <form className='login__container--form' onSubmit={handleSubmit}>
-          <input
-            name='email'
-            className='input'
-            type='text'
-            placeholder='Correo'
-            onChange={handleInput}
-          />
-          <input
-            name='password'
-            className='input'
-            type='password'
-            placeholder='Contraseña'
-            onChange={handleInput}
-          />
-          <button className='button'>Iniciar sesión</button>
-          <div className='login__container--remember-me'>
-            <label>
-              <input type='checkbox' id='cbox1' value='first_checkbox' />
-              Recuérdame
-            </label>
-            <a href='/'>Olvidé mi contraseña</a>
-          </div>
-        </form>
-        <section className='login__container--social-media'>
-          <div>
-            <img src={googleIcon} />
-            Inicia sesión con Google
-          </div>
-          <div>
-            <img src={twitterIcon} />
-            Inicia sesión con Twitter
-          </div>
+    <>
+      <Header isLogin />
+      <section className='login'>
+        <section className='login__container'>
+          <h2>Inicia sesión</h2>
+          <form className='login__container--form' onSubmit={handleSubmit}>
+            <input
+              name='email'
+              className='input'
+              type='text'
+              placeholder='Correo'
+              onChange={handleInput}
+            />
+            <input
+              name='password'
+              className='input'
+              type='password'
+              placeholder='Contraseña'
+              onChange={handleInput}
+            />
+            {/* eslint-disable-next-line react/button-has-type */}
+            <button className='button'>Iniciar sesión</button>
+            <div className='login__container--remember-me'>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label>
+                <input type='checkbox' id='cbox1' value='first_checkbox' />
+                Recuérdame
+              </label>
+              <a href='/'>Olvidé mi contraseña</a>
+            </div>
+          </form>
+          <section className='login__container--social-media'>
+            <div>
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <img src={googleIcon} />
+              Inicia sesión con Google
+            </div>
+            <div>
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <img src={twitterIcon} />
+              Inicia sesión con Twitter
+            </div>
+          </section>
+          <p className='login__container--register'>
+            No tienes ninguna cuenta
+            {' '}
+            <Link to='/register'>Regístrate</Link>
+          </p>
         </section>
-        <p className='login__container--register'>
-          No tienes ninguna cuenta
-          <Link to='/register'> Regístrate</Link>
-        </p>
       </section>
-    </section>
+    </>
   );
 };
 
