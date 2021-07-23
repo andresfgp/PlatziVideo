@@ -9,11 +9,26 @@ import '../assets/styles/App.scss';
 import Header from '../components/Header';
 
 const Home = (props) => {
-  const { myList, trends, originals } = props;
+  const { searchResult, myList, trends, originals } = props;
   return (
     <>
       <Header />
       <Search isHome />
+      {searchResult.length > 0 && (
+        <Categories title='Video buscado'>
+          <Carousel>
+            {
+              searchResult.map((item) => (
+                <CarouselItem
+                  key={item.id}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...item}
+                />
+              ))
+            }
+          </Carousel>
+        </Categories>
+      )}
       {myList.length > 0 && (
         <Categories title='Mi lista'>
           <Carousel>
@@ -56,6 +71,7 @@ const Home = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    searchResult: state.searchResult,
     myList: state.myList,
     trends: state.trends,
     originals: state.originals,
@@ -63,6 +79,7 @@ const mapStateToProps = (state) => {
 };
 
 Home.propTypes = {
+  searchResult: PropTypes.array,
   myList: PropTypes.array,
   trends: PropTypes.array,
   originals: PropTypes.array,

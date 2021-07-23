@@ -1,3 +1,4 @@
+/* eslint-disable no-duplicate-case */
 const reducer = (state, action) => {
   switch (action.type) { // evaluar el type
     case 'SET_FAVORITE':
@@ -30,6 +31,14 @@ const reducer = (state, action) => {
         ...state, //traer el estado que ya tengo
         playing: state.trends.concat(state.originals).find((item) => item.id === Number(action.payload)) || [], // Usa el metodo concat para unir los 2 arrays y luego el metodo find para filtrar.
       };
+
+    case 'GET_SEARCH_VIDEO':
+      if (action.payload === '') return { ...state, searchResult: [] };
+      return {
+        ...state,
+        searchResult: state.trends.concat(state.originals).filter((item) => item.title.toLowerCase().includes(action.payload.toLowerCase())),
+      };
+
     default:
       return state;
 
