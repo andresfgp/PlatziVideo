@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/styles/components/Register.scss';
 import { connect } from 'react-redux';
-import { registerRequest } from '../actions';
+import { registerUser } from '../actions';
 import Header from '../components/Header';
 
 const Register = (props) => {
@@ -21,8 +21,7 @@ const Register = (props) => {
   const handleSubmit = (event) => { // enviar informacion formulario
     event.preventDefault();
     //console.log(form);
-    props.registerRequest(form);
-    props.history.push('/');
+    props.registerUser(form, '/login');
   };
   return (
     <>
@@ -53,7 +52,7 @@ const Register = (props) => {
               onChange={handleInput}
             />
             {/* eslint-disable-next-line react/button-has-type */}
-            <button className='button'>Registrarme</button>
+            <button className='button' type='submit'>Registrarme</button>
           </form>
           <Link to='/login'>Iniciar sesión</Link>
         </section>
@@ -63,7 +62,7 @@ const Register = (props) => {
 };
 
 const mapDispatchToProps = {
-  registerRequest,
+  registerUser,
 };
 
 export default connect(null, mapDispatchToProps)(Register); // mandar info de form a estado

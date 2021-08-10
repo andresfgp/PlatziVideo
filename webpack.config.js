@@ -1,13 +1,25 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
-module.exports = { //modulo a exportar
-  entry: './src/index.js',
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const isDev = (process.env.ENV === 'development');
+const entry = ['./src/frontend/index.js'];
+
+if (isDev) entry.push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true');
+
+module.exports = {
+  mode: isDev ? 'development' : 'production',
+  entry,
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/',
+    path: isDev ? '/' : path.resolve(__dirname, 'src/server/public'),
+    filename: isDev ? 'assets/app.js' : 'assets/app-[hash].js',
+    'publicPath': '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -22,28 +34,25 @@ module.exports = { //modulo a exportar
         },
       },
       {
-        test: /\.html$/,
-        use: [{
-          loader: 'html-loader',
-        }],
-      },
-      {
         test: /\.(s*)css$/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader,
-        },
-        'css-loader',
-        'sass-loader',
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          'css-loader',
+          'sass-loader',
         ],
       },
       {
         test: /\.(png|gif|jpg)$/,
-        use: [{
-          'loader': 'file-loader',
-          options: {
-            name: 'assets/[hash].[ext]',
+        use: [
+          {
+            'loader': 'file-loader',
+            options: {
+              name: 'assets/[hash].[ext]',
+            },
           },
-        }],
+        ],
       },
     ],
   },
@@ -51,13 +60,15 @@ module.exports = { //modulo a exportar
     historyApiFallback: true,
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html',
-    }),
+    isDev ? new webpack.HotModuleReplacementPlugin() : () => { },
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css', //referencia para trabajar desde webpack con sass
+      filename: isDev ? 'assets/app.css' : 'assets/app-[hash].css',
     }),
+    isDev ? () => { } :
+      new CompressionPlugin({
+        test: /\.js$|\.css$/,
+        filename: '[path].gz',
+      }),
+    isDev ? () => { } : new ManifestPlugin(),
   ],
-  devtool: 'source-map',
 };
